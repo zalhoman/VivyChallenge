@@ -1,0 +1,49 @@
+# Generated files
+bin/
+gen/
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
+#Android generated
+bin
+gen
+lint.xml
+# Android NDK
+*.o
+*.o.d
+*_g
+*.a
+*.so
+*.pinfo
+*.gcno
+*.bar
+gdbserver
+gdb.setup
+#IntelliJ IDEA
+.idea
+*.iml
+*.ipr
+*.iws
+gen-external-apklibs
+#Maven
+target
+release.properties
+pom.xml.*
+#Ant
+build.xml
+#Other
+.DS_Store
+out

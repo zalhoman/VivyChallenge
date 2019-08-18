@@ -8,7 +8,7 @@ import io.reactivex.Single
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(user: User) : String
+    fun insert(user: User) : Long
 
     @Transaction
     @Query("select * from User where username = :username")

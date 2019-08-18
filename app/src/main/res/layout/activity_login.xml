@@ -5,6 +5,10 @@
         <variable
             name="viewModel"
             type="andrepereira.com.br.vivychallenge.usecases.login.LoginActivityViewModel" />
+
+        <variable
+            name="activity"
+            type="andrepereira.com.br.vivychallenge.LoginActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:navigateToDoctorList="@{viewModel.authStatus}"
-        tools:context=".usecases.login.LoginActivity">
+        app:finishActivity="@{activity}"
+        tools:context=".LoginActivity">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username_field"

@@ -1,8 +1,9 @@
 package andrepereira.com.br.vivychallenge.usecases.login
 
 import andrepereira.com.br.vivychallenge.data.dao.UserDao
-import andrepereira.com.br.vivychallenge.data.model.AuthResponse
+import andrepereira.com.br.vivychallenge.data.model.User
 import andrepereira.com.br.vivychallenge.data.service.login.LoginService
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,6 +20,14 @@ class LoginRepository {
     fun autheticate(username: String, password: String): Observable<AuthResponse> {
         return loginService.autheticate(username, password)
             .subscribeOn(Schedulers.io())
+            .flatMap { authResponse ->
+                authResponse.accessToken?.let { accessToken ->
+                    val userId = userDao.insert(User(username, password, accessToken))
+                    Log.d("userId", userId.toString())
+                    userId
+                }
+                return@flatMap Observable.just(authResponse)
+            }
             .observeOn(AndroidSchedulers.mainThread())
     }
 

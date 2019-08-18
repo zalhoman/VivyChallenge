@@ -1,6 +1,6 @@
 package andrepereira.com.br.vivychallenge.data.service.login
 
-import andrepereira.com.br.vivychallenge.data.model.AuthResponse
+import andrepereira.com.br.vivychallenge.usecases.login.AuthResponse
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

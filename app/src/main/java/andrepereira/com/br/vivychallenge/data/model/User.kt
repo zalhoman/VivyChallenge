@@ -7,4 +7,4 @@ import java.io.Serializable
 @Entity
 data class User(@PrimaryKey val username: String,
                 val password: String,
-                val authToken: String) : Serializable{}
+                val authToken: String) : Serializable

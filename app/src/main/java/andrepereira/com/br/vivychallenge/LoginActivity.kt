@@ -1,13 +1,14 @@
-package andrepereira.com.br.vivychallenge.usecases.login
+package andrepereira.com.br.vivychallenge
 
-import andrepereira.com.br.vivychallenge.R
 import andrepereira.com.br.vivychallenge.data.component.DaggerRepositoryComponent
 import andrepereira.com.br.vivychallenge.data.module.RepositoryModule
 import andrepereira.com.br.vivychallenge.databinding.ActivityLoginBinding
+import andrepereira.com.br.vivychallenge.usecases.login.LoginActivityViewModel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
 
         val viewRoot = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
         viewRoot.viewModel = viewModel
+        viewRoot.activity = this
 
         injectDependencies()
     }

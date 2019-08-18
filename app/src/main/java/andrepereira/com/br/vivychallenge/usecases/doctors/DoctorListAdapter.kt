@@ -1,7 +1,7 @@
 package andrepereira.com.br.vivychallenge.usecases.doctors
 
 import andrepereira.com.br.vivychallenge.data.model.Doctor
-import android.view.View
+import andrepereira.com.br.vivychallenge.databinding.FragmentDoctorListBinding
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +19,6 @@ class DoctorListAdapter(val doctors: List<Doctor>): RecyclerView.Adapter<DoctorV
     }
 }
 
-class DoctorViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView){
+class DoctorViewHolder(val itemView: FragmentDoctorListBinding): RecyclerView.ViewHolder(itemView.root){
 
 }

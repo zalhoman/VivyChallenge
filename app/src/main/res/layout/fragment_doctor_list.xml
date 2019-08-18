@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <data>
         <variable
@@ -11,6 +11,58 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/doctors_search_ti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/doctors_list_rv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/doctors_search_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Doctor name"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/doctors_list_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            app:doctorsRecyclerView="@{viewModel.searchStatus}"
+            app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/no_doctors_searched"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type the doctor's name that you've been searching for"
+            app:notStartedTextField="@{viewModel.searchStatus}"
+            app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/no_doctors_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No doctors were found"
+            app:notFoundTextField="@{viewModel.searchStatus}"
+            app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

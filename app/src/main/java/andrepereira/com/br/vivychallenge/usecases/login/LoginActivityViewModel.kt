@@ -11,7 +11,7 @@ class LoginActivityViewModel : ViewModel() {
     val passwordText = ObservableField("")
     val authStatus = ObservableField<AuthStatus>(AuthStatus.None)
 
-    private val loginRepository = LoginRepository()
+    val loginRepository = LoginRepository()
     private val disposable = CompositeDisposable()
 
     fun executeLogin() {

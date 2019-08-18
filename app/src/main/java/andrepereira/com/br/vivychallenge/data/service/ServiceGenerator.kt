@@ -1,9 +1,9 @@
 package andrepereira.com.br.vivychallenge.data.service
 
-import andrepereira.com.br.vivychallenge.data.model.User
+import andrepereira.com.br.vivychallenge.data.model.AuthResponse
 import andrepereira.com.br.vivychallenge.data.service.interceptors.BasicAuthInterceptor
+import andrepereira.com.br.vivychallenge.data.service.login.AuthDeserializer
 import andrepereira.com.br.vivychallenge.data.service.login.LoginService
-import andrepereira.com.br.vivychallenge.data.service.login.UserDeserialiser
 import andrepereira.com.br.vivychallenge.util.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -53,7 +53,7 @@ class ServiceGenerator {
         }
 
         private fun buildAuthGsonConverter(): Gson {
-            return GsonBuilder().registerTypeAdapter(User::class.java, UserDeserialiser()).create()
+            return GsonBuilder().registerTypeAdapter(AuthResponse::class.java, AuthDeserializer()).create()
         }
 
 

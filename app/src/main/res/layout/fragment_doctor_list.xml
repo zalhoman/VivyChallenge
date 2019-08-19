@@ -14,14 +14,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/doctors_search_ti"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/doctors_list_rv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/search_button"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/doctors_search_et"
@@ -31,12 +31,24 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/search_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/doctors_search_ti"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/doctors_search_ti"
+            app:doctorListViewModel="@{viewModel}"
+            android:layout_margin="8dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/doctors_list_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="8dp"
             app:doctorsRecyclerView="@{viewModel.searchStatus}"
+            app:doctorListViewModel="@{viewModel}"
             app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

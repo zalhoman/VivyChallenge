@@ -1,6 +1,8 @@
 package andrepereira.com.br.vivychallenge.usecases.doctors
 
 import andrepereira.com.br.vivychallenge.R
+import andrepereira.com.br.vivychallenge.data.component.DaggerRepositoryComponent
+import andrepereira.com.br.vivychallenge.data.module.RepositoryModule
 import andrepereira.com.br.vivychallenge.databinding.FragmentDoctorListBinding
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +27,17 @@ class DoctorListFragment: Fragment() {
         )
 
         viewRoot.viewModel = viewModel
+
+        injectDependecies()
+
         return viewRoot.root
+    }
+
+    private fun injectDependecies() {
+        val repositoryComponent = DaggerRepositoryComponent.builder()
+            .repositoryModule(RepositoryModule(activity!!.baseContext))
+            .build()
+
+        repositoryComponent.inject(viewModel.doctoRepository)
     }
 }

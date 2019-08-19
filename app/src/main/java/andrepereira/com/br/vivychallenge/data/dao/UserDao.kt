@@ -2,17 +2,17 @@ package andrepereira.com.br.vivychallenge.data.dao
 
 import andrepereira.com.br.vivychallenge.data.model.User
 import androidx.room.*
-import io.reactivex.Single
+import io.reactivex.Observable
 
 @Dao
 interface UserDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User) : Long
 
     @Transaction
     @Query("select * from User where username = :username")
-    fun find(username: String): Single<User>
+    fun findLoggedUser(username: String): Observable<List<User>>
 
     @Update
     fun update(user: User)

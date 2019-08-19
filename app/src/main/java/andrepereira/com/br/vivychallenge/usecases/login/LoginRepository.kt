@@ -22,7 +22,8 @@ class LoginRepository {
             .subscribeOn(Schedulers.io())
             .flatMap { authResponse ->
                 authResponse.accessToken?.let { accessToken ->
-                    val userId = userDao.insert(User(username, password, accessToken))
+                    val user = User(username, password, accessToken)
+                    val userId = userDao.insert(user)
                     Log.d("userId", userId.toString())
                     userId
                 }

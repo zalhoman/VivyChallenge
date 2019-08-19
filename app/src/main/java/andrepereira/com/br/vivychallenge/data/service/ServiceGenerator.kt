@@ -1,14 +1,15 @@
 package andrepereira.com.br.vivychallenge.data.service
 
+import andrepereira.com.br.vivychallenge.data.service.doctor.DoctorsResponseDeserializer
 import andrepereira.com.br.vivychallenge.data.service.interceptors.BasicAuthInterceptor
 import andrepereira.com.br.vivychallenge.data.service.login.AuthDeserializer
 import andrepereira.com.br.vivychallenge.data.service.login.LoginService
+import andrepereira.com.br.vivychallenge.usecases.doctors.DoctorsResponse
 import andrepereira.com.br.vivychallenge.usecases.login.AuthResponse
 import andrepereira.com.br.vivychallenge.util.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,16 +20,13 @@ class ServiceGenerator {
         fun <T> createService(serviceClass: Class<T>): T {
 
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-                        .setLevel(HttpLoggingInterceptor.Level.HEADERS)
-                        .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(Constants.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(buildApiGsonConverter()))
                 .client(okHttpClient)
                 .build()
 
@@ -54,6 +52,10 @@ class ServiceGenerator {
 
         private fun buildAuthGsonConverter(): Gson {
             return GsonBuilder().registerTypeAdapter(AuthResponse::class.java, AuthDeserializer()).create()
+        }
+
+        private fun buildApiGsonConverter(): Gson {
+            return GsonBuilder().registerTypeAdapter(DoctorsResponse::class.java, DoctorsResponseDeserializer()).create()
         }
 
 

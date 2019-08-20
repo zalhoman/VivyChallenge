@@ -44,7 +44,8 @@ fun doctorsRecyclerView(view: RecyclerView, doctorSearchStatus: DoctorSearchStat
 
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            if (reachedEndOfList(doctorSearchStatus, (view.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())) {
+                            if (reachedEndOfList((view.layoutManager as LinearLayoutManager).itemCount,
+                                    (view.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition())) {
                                 viewModel.nextPage()
                             }
                         }
@@ -110,5 +111,5 @@ fun onSearchError(view: View, searchStatus: DoctorSearchStatus) {
 
 private fun downMotionScroll(dy: Int) = dy > 0
 
-private fun reachedEndOfList(doctorSearchStatus: DoctorSearchStatus.SearchSuccess, lastVisibleItem: Int) =
-    (lastVisibleItem + 1 >= doctorSearchStatus.list.size)
+private fun reachedEndOfList(itemCount: Int, lastVisibleItem: Int) =
+    (lastVisibleItem + 1 >= itemCount)

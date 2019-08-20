@@ -23,20 +23,20 @@ class DoctorsResponseDeserializer: JsonDeserializer<DoctorsResponse> {
                 id = doctorJsonObject["id"].asString,
                 name = doctorJsonObject["name"].asString,
                 photoId = photoId,
-                rating = doctorJsonObject["rating"].asDouble,
-                latitude = doctorJsonObject["lat"].asDouble,
-                longitude = doctorJsonObject["lng"].asDouble
+                address = doctorJsonObject["address"].asString
             )
             doctors.add(doctor)
         }
 
         val jsonObject = json!!.asJsonObject
-        val lastKey = jsonObject["lastKey"]?.let {
-            return@let it.asString
+        var lastKey: String? = null
+        if (!jsonObject["lastKey"].isJsonNull) {
+            lastKey = jsonObject["lastKey"].asString
         }
         val error = jsonObject["error"]?.let {
             return@let it.asString
         }
-        return DoctorsResponse(doctors.toList(), lastKey, error)
+
+        return DoctorsResponse(doctors, lastKey, null, null, error)
     }
 }

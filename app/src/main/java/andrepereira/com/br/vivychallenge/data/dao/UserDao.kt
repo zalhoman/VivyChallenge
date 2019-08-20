@@ -2,7 +2,6 @@ package andrepereira.com.br.vivychallenge.data.dao
 
 import andrepereira.com.br.vivychallenge.data.model.User
 import androidx.room.*
-import io.reactivex.Observable
 
 @Dao
 interface UserDao {
@@ -12,7 +11,7 @@ interface UserDao {
 
     @Transaction
     @Query("select * from User where username = :username")
-    fun findLoggedUser(username: String): Observable<List<User>>
+    fun findLoggedUser(username: String): User
 
     @Update
     fun update(user: User)

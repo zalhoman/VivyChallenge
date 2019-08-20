@@ -27,6 +27,7 @@
                 android:id="@+id/doctors_search_et"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:text="@={viewModel.searchField}"
                 android:hint="Doctor name"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -38,6 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/doctors_search_ti"
             app:doctorListViewModel="@{viewModel}"
+            app:onSearchClick="@{viewModel.searchField}"
             android:layout_margin="8dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
@@ -49,6 +51,7 @@
             android:layout_margin="8dp"
             app:doctorsRecyclerView="@{viewModel.searchStatus}"
             app:doctorListViewModel="@{viewModel}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

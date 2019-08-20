@@ -41,6 +41,7 @@
             app:layout_constraintBottom_toBottomOf="@id/doctors_search_ti"
             app:doctorListViewModel="@{viewModel}"
             app:onSearchClick="@{viewModel.searchField}"
+            app:searchButtonEnabled="@{viewModel.searchStatus}"
             android:background="@drawable/search_icon"
             android:layout_margin="8dp"
             android:layout_width="50dp"

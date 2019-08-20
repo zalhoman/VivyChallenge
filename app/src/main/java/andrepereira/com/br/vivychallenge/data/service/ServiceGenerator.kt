@@ -20,6 +20,9 @@ class ServiceGenerator {
         fun <T> createService(serviceClass: Class<T>): T {
 
             val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor {
+                    it.proceed(it.request())
+                }
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .build()
 

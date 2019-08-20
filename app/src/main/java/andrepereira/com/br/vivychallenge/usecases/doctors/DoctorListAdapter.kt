@@ -3,9 +3,11 @@ package andrepereira.com.br.vivychallenge.usecases.doctors
 import andrepereira.com.br.vivychallenge.R
 import andrepereira.com.br.vivychallenge.data.dao.DatabaseHelper
 import andrepereira.com.br.vivychallenge.data.model.Doctor
+import andrepereira.com.br.vivychallenge.data.model.User
 import andrepereira.com.br.vivychallenge.data.service.interceptors.PicassoInterceptor
 import andrepereira.com.br.vivychallenge.databinding.DoctorAdapterRowBinding
 import andrepereira.com.br.vivychallenge.util.Constants
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,7 +17,23 @@ import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 
-class DoctorListAdapter(val doctors: MutableList<Doctor>): RecyclerView.Adapter<DoctorViewHolder>() {
+class DoctorListAdapter(val doctors: MutableList<Doctor>, context: Context): RecyclerView.Adapter<DoctorViewHolder>() {
+
+    private val picasso: Picasso
+    private val client: OkHttpClient
+    private val userDao = Room.databaseBuilder(context,
+        DatabaseHelper::class.java,
+        "ChallengeDB")
+        .allowMainThreadQueries().build().getUserDao()
+    private val loggedUser: User
+
+    init {
+        loggedUser = userDao.findLoggedUser(Constants.LOGGED_USERNAME)
+        client = OkHttpClient.Builder().addInterceptor(PicassoInterceptor(loggedUser.authToken)).build()
+        picasso = Picasso.Builder(context)
+            .downloader(OkHttp3Downloader(client))
+            .build()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorViewHolder {
         val viewRoot = DataBindingUtil.inflate<DoctorAdapterRowBinding>(
@@ -25,7 +43,7 @@ class DoctorListAdapter(val doctors: MutableList<Doctor>): RecyclerView.Adapter<
             false
         )
 
-        return DoctorViewHolder(viewRoot)
+        return DoctorViewHolder(viewRoot, picasso)
     }
 
     override fun getItemCount(): Int {
@@ -44,22 +62,26 @@ class DoctorListAdapter(val doctors: MutableList<Doctor>): RecyclerView.Adapter<
     }
 }
 
-class DoctorViewHolder(val row: DoctorAdapterRowBinding): RecyclerView.ViewHolder(row.root){
+class DoctorViewHolder(
+    private val row: DoctorAdapterRowBinding,
+    private val picasso: Picasso
+): RecyclerView.ViewHolder(row.root){
 
     private val userDao = Room.databaseBuilder(row.root.context,
         DatabaseHelper::class.java,
         "ChallengeDB")
         .allowMainThreadQueries().build().getUserDao()
+    private val loggedUser: User
+
+    init {
+        loggedUser = userDao.findLoggedUser(Constants.LOGGED_USERNAME)
+
+    }
 
     fun bindData(doctor: Doctor) {
-        val loggedUser = userDao.findLoggedUser(Constants.LOGGED_USERNAME)
-        val client = OkHttpClient.Builder().addInterceptor(PicassoInterceptor(loggedUser.authToken)).build()
 
         row.doctorName.text = doctor.name
         row.doctorAddress.text = doctor.address
-        val picasso = Picasso.Builder(row.root.context)
-            .downloader(OkHttp3Downloader(client))
-            .build()
         picasso.load(Constants.API_URL + "api/doctors/${doctor.id}/keys/profilepictures")
             .placeholder(R.mipmap.profile)
             .into(row.doctorPhoto)

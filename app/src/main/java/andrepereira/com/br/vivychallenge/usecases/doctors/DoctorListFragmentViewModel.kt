@@ -16,7 +16,6 @@ class DoctorListFragmentViewModel: ViewModel() {
     private val disposable = CompositeDisposable()
 
     private fun searchEmpty() {
-        searchStatus.set(DoctorSearchStatus.Searching)
         disposable.add(
             doctoRepository.searchAllDoctors()
                 .subscribe({doctorResponse ->
@@ -45,7 +44,6 @@ class DoctorListFragmentViewModel: ViewModel() {
 
     fun searchDoctor(doctorName: String) {
         clearDoctorsList()
-        searchStatus.set(DoctorSearchStatus.Searching)
         if (doctorName.isEmpty()) {
             searchEmpty()
         } else {
@@ -85,7 +83,7 @@ class DoctorListFragmentViewModel: ViewModel() {
 
             val tempDoctors = searchSuccess.list
             val lastSearch = searchSuccess.searchDoctor
-            searchStatus.set(DoctorSearchStatus.Searching)
+            searchStatus.set(DoctorSearchStatus.NextPageSearch)
 
             disposable.add(doctoRepository.nextPage(lastSearch, searchSuccess.lastKey, searchSuccess.latitude, searchSuccess.longitude)
                 .subscribe ({ doctorsResponse ->
@@ -126,12 +124,13 @@ class DoctorListFragmentViewModel: ViewModel() {
 
 sealed class DoctorSearchStatus {
     object NotStarted: DoctorSearchStatus()
-    object Searching: DoctorSearchStatus()
+    object NewSearch: DoctorSearchStatus()
     data class SearchSuccess(val list: MutableList<Doctor>,
                              val lastKey: String?,
                              val searchDoctor: String,
                              val latitude: Double,
                              val longitude: Double) : DoctorSearchStatus()
     object NotFound: DoctorSearchStatus()
+    object NextPageSearch: DoctorSearchStatus()
     data class Error(val errorMsg: String): DoctorSearchStatus()
 }

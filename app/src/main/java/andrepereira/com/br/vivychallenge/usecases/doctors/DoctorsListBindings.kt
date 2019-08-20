@@ -32,7 +32,6 @@ fun notFoundTextField(view: TextView, doctorSearchStatus: DoctorSearchStatus) {
 
 @BindingAdapter("doctorsRecyclerView", "doctorListViewModel")
 fun doctorsRecyclerView(view: RecyclerView, doctorSearchStatus: DoctorSearchStatus, viewModel: DoctorListFragmentViewModel) {
-
     when (doctorSearchStatus) {
         is DoctorSearchStatus.SearchSuccess -> {
             view.visibility = View.VISIBLE
@@ -40,21 +39,31 @@ fun doctorsRecyclerView(view: RecyclerView, doctorSearchStatus: DoctorSearchStat
                 && !(view.adapter!! as DoctorListAdapter).needUpdate()) {
                     view.adapter!!.notifyDataSetChanged()
             } else {
-                view.adapter = DoctorListAdapter(doctorSearchStatus.list)
+                view.adapter = DoctorListAdapter(doctorSearchStatus.list, view.context)
                 view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
 
-                        if (reachedEndOfList(doctorSearchStatus,
-                                (view.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())
-                            && downMotionScroll(dy)) {
-                            viewModel.nextPage()
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                            if (reachedEndOfList(doctorSearchStatus, (view.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())) {
+                                viewModel.nextPage()
+                            }
+                        }
+
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            if (reachedEndOfList(doctorSearchStatus, (view.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())) {
+                                viewModel.nextPage()
+                            }
                         }
                     }
                 })
             }
         }
-        is DoctorSearchStatus.Searching -> view.visibility = View.VISIBLE
+        is DoctorSearchStatus.NewSearch -> {
+            view.visibility = View.VISIBLE
+            view.adapter = null
+        }
+        is DoctorSearchStatus.NextPageSearch -> view.visibility = View.VISIBLE
         else -> view.visibility = View.GONE
     }
 }
@@ -62,6 +71,8 @@ fun doctorsRecyclerView(view: RecyclerView, doctorSearchStatus: DoctorSearchStat
 @BindingAdapter("onSearchClick", "doctorListViewModel", requireAll = true)
 fun searchClick(button: Button,  searchField: String, viewModel: DoctorListFragmentViewModel) {
     button.setOnClickListener {
+        button.isEnabled = false
+        viewModel.searchStatus.set(DoctorSearchStatus.NewSearch)
         if (ContextCompat.checkSelfPermission(button.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(button.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             Snackbar.make(button,
@@ -74,9 +85,17 @@ fun searchClick(button: Button,  searchField: String, viewModel: DoctorListFragm
     }
 }
 
+@BindingAdapter("searchButtonEnabled")
+fun onSearchButtonEnabled(button: Button, searchStatus: DoctorSearchStatus) {
+    when(searchStatus) {
+        is DoctorSearchStatus.NewSearch -> button.isEnabled = false
+        else -> button.isEnabled = true
+    }
+}
+
 @BindingAdapter("progressBar")
 fun onProgressBar(view: ProgressBar, searchStatus: DoctorSearchStatus) {
-    if (searchStatus is DoctorSearchStatus.Searching) {
+    if (searchStatus is DoctorSearchStatus.NewSearch || searchStatus is DoctorSearchStatus.NextPageSearch) {
         view.isIndeterminate = true
         view.visibility = View.VISIBLE
     } else {

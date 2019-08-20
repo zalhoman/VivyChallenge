@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:lines="2"
-            tools:text="Doctor's name" />
+            tools:text="@string/hint_doctor_name" />
 
         <TextView
             android:id="@+id/doctor_address"
@@ -46,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            tools:text="Doctor's address" />
+            tools:text="@string/hint_doctor_address" />
 
         <View
             android:layout_width="0dp"

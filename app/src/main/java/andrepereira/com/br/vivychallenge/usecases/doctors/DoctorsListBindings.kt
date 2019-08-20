@@ -1,10 +1,11 @@
 package andrepereira.com.br.vivychallenge.usecases.doctors
 
+import andrepereira.com.br.vivychallenge.R
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -46,7 +47,6 @@ fun doctorsRecyclerView(view: RecyclerView, doctorSearchStatus: DoctorSearchStat
                         if (reachedEndOfList(doctorSearchStatus,
                                 (view.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())
                             && downMotionScroll(dy)) {
-                            Log.d("nextPage", "nextPage")
                             viewModel.nextPage()
                         }
                     }
@@ -63,10 +63,23 @@ fun searchClick(button: Button,  searchField: String, viewModel: DoctorListFragm
     button.setOnClickListener {
         if (ContextCompat.checkSelfPermission(button.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(button.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            Snackbar.make(button, "Permission not granted", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(button,
+                button.context.resources.getString(R.string.location_permission_not_granted),
+                Snackbar.LENGTH_LONG)
+                .show()
         } else {
             viewModel.searchDoctor(searchField)
         }
+    }
+}
+
+@BindingAdapter("progressBar")
+fun onProgressBar(view: ProgressBar, searchStatus: DoctorSearchStatus) {
+    if (searchStatus is DoctorSearchStatus.Searching) {
+        view.isIndeterminate = true
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
     }
 }
 

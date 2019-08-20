@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">VivyChallenge</string>
+    <string name="hint_doctor_name">Doctor`s name</string>
+    <string name="no_doctor_search">Type the doctor\'s name that you\'ve been searching for</string>
+    <string name="no_doctors_found">No doctors were found</string>
+    <string name="location_permission_not_granted">Location access not granted. Allow location access</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="hint_doctor_address">Doctor\'s address</string>
 </resources>

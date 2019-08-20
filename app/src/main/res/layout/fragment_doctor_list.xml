@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@={viewModel.searchField}"
-                android:hint="Doctor name"/>
+                android:hint="@string/hint_doctor_name"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,6 +40,7 @@
             app:layout_constraintBottom_toBottomOf="@id/doctors_search_ti"
             app:doctorListViewModel="@{viewModel}"
             app:onSearchClick="@{viewModel.searchField}"
+            android:background="@drawable/search_icon"
             android:layout_margin="8dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
@@ -61,7 +62,7 @@
             android:id="@+id/no_doctors_searched"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Type the doctor's name that you've been searching for"
+            android:text="@string/no_doctor_search"
             app:notStartedTextField="@{viewModel.searchStatus}"
             app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,12 +73,22 @@
             android:id="@+id/no_doctors_found"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No doctors were found"
+            android:text="@string/no_doctors_found"
             app:notFoundTextField="@{viewModel.searchStatus}"
             app:layout_constraintTop_toBottomOf="@id/doctors_search_ti"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:progressBar="@{viewModel.searchStatus}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

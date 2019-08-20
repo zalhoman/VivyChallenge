@@ -1,7 +1,6 @@
 package andrepereira.com.br.vivychallenge.usecases.doctors
 
 import andrepereira.com.br.vivychallenge.data.model.Doctor
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -19,8 +18,20 @@ class DoctorListFragmentViewModel: ViewModel() {
         searchStatus.set(DoctorSearchStatus.Searching)
         disposable.add(
             doctoRepository.searchAllDoctors()
-                .subscribe({
-                    searchStatus.set(DoctorSearchStatus.SearchSuccess(it.doctors!!, it.lastKey, "", it.latitude!!, it.longitude!!))
+                .subscribe({doctorResponse ->
+                    if (doctorResponse.errorMsg.isNullOrEmpty()) {
+                        if (!doctorResponse.doctors.isNullOrEmpty()){
+                            searchStatus.set(DoctorSearchStatus.SearchSuccess(doctorResponse.doctors,
+                                doctorResponse.lastKey,
+                                "",
+                                doctorResponse.latitude!!,
+                                doctorResponse.longitude!!))
+                        } else {
+                            searchStatus.set(DoctorSearchStatus.NotFound)
+                        }
+                    } else {
+                        searchStatus.set(DoctorSearchStatus.Error(doctorResponse.errorMsg))
+                    }
                 }, {
                     searchStatus.set(DoctorSearchStatus.Error(it.message!!))
                 })
@@ -58,7 +69,6 @@ class DoctorListFragmentViewModel: ViewModel() {
 
     fun nextPage() {
         if (searchStatus.get() is DoctorSearchStatus.SearchSuccess) {
-            Log.d("nextPage2", "nextPage2")
             val searchSuccess = searchStatus.get() as DoctorSearchStatus.SearchSuccess
             if (searchSuccess.lastKey == null) {
                 return

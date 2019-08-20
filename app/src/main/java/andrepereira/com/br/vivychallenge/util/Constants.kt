@@ -10,5 +10,7 @@ class Constants {
 
         val API_URL = HTTPS_PREFIX + API_PREFIX + BASE_URL
         val AUTH_URL = HTTPS_PREFIX + AUTH_PREFIX + BASE_URL
+
+        val LOGGED_USERNAME = "androidChallenge@vivy.com"
     }
 }

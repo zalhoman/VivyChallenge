@@ -52,7 +52,7 @@ class DoctorViewHolder(val row: DoctorAdapterRowBinding): RecyclerView.ViewHolde
         .allowMainThreadQueries().build().getUserDao()
 
     fun bindData(doctor: Doctor) {
-        val loggedUser = userDao.findLoggedUser("androidChallenge@vivy.com")
+        val loggedUser = userDao.findLoggedUser(Constants.LOGGED_USERNAME)
         val client = OkHttpClient.Builder().addInterceptor(PicassoInterceptor(loggedUser.authToken)).build()
 
         row.doctorName.text = doctor.name

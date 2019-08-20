@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.Button
 import androidx.databinding.BindingAdapter
+import com.google.android.material.snackbar.Snackbar
 
 @BindingAdapter("clickLogin")
 fun clickLogin(view: Button, viewModel: LoginActivityViewModel) {
@@ -20,5 +21,12 @@ fun navigateToDoctorList(view: View, authStatus: AuthStatus, activity: LoginActi
         val intent = Intent(view.context, MainActivity::class.java)
         activity.startActivity(intent)
         activity.finish()
+    }
+}
+
+@BindingAdapter("loginError")
+fun onLoginError(view: View, authStatus: AuthStatus) {
+    if (authStatus is AuthStatus.AuthError) {
+        Snackbar.make(view, authStatus.error, Snackbar.LENGTH_LONG).show()
     }
 }

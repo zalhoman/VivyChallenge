@@ -1,9 +1,9 @@
 package andrepereira.com.br.vivychallenge.usecases.login
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import java.net.UnknownHostException
 
 class LoginActivityViewModel : ViewModel() {
 
@@ -25,8 +25,11 @@ class LoginActivityViewModel : ViewModel() {
                     authStatus.set(AuthStatus.AuthError(error))
                 }
             }, {
-                Log.e("errorr", it.message)
-                authStatus.set(AuthStatus.AuthError(it.message!!))
+                if (it is UnknownHostException) {
+                    authStatus.set(AuthStatus.AuthError("Check you network connection and try again"))
+                } else {
+                    authStatus.set(AuthStatus.AuthError(it.message!!))
+                }
             })
         )
     }

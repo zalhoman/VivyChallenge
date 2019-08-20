@@ -4,6 +4,7 @@ import andrepereira.com.br.vivychallenge.data.model.Doctor
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import java.net.UnknownHostException
 
 class DoctorListFragmentViewModel: ViewModel() {
 
@@ -33,7 +34,11 @@ class DoctorListFragmentViewModel: ViewModel() {
                         searchStatus.set(DoctorSearchStatus.Error(doctorResponse.errorMsg))
                     }
                 }, {
-                    searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                    if (it is UnknownHostException) {
+                        searchStatus.set(DoctorSearchStatus.Error("Check you network connection and try again"))
+                    } else {
+                        searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                    }
                 })
         )
     }
@@ -61,7 +66,11 @@ class DoctorListFragmentViewModel: ViewModel() {
                             searchStatus.set(DoctorSearchStatus.Error(doctorsResponse.errorMsg))
                         }
                     }, {
-                        searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                        if (it is UnknownHostException) {
+                            searchStatus.set(DoctorSearchStatus.Error("Check you network connection and try again"))
+                        } else {
+                            searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                        }
                     })
             )
         }
@@ -93,7 +102,11 @@ class DoctorListFragmentViewModel: ViewModel() {
                         }
                     }
                 }, {
-                    searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                    if (it is UnknownHostException) {
+                        searchStatus.set(DoctorSearchStatus.Error("Check you network connection and try again"))
+                    } else {
+                        searchStatus.set(DoctorSearchStatus.Error(it.message!!))
+                    }
                 }))
         }
     }

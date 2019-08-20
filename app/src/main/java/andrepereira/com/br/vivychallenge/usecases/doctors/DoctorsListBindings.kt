@@ -25,6 +25,7 @@ fun notStartedTextField(view: TextView, doctorSearchStatus: DoctorSearchStatus) 
 fun notFoundTextField(view: TextView, doctorSearchStatus: DoctorSearchStatus) {
     when (doctorSearchStatus) {
         is DoctorSearchStatus.NotFound -> view.visibility = View.VISIBLE
+        is DoctorSearchStatus.Error -> view.visibility = View.VISIBLE
         else -> view.visibility = View.GONE
     }
 }
@@ -80,6 +81,13 @@ fun onProgressBar(view: ProgressBar, searchStatus: DoctorSearchStatus) {
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("searchError")
+fun onSearchError(view: View, searchStatus: DoctorSearchStatus) {
+    if (searchStatus is DoctorSearchStatus.Error) {
+        Snackbar.make(view, searchStatus.errorMsg, Snackbar.LENGTH_LONG).show()
     }
 }
 
